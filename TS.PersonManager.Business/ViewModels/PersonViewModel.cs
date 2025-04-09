@@ -36,9 +36,8 @@ public class PersonViewModel
     [Display(Name = "Profile Picture")]
     public IFormFile? ImageUpload { get; set; }
 
-    public string? ImagePath { get; set; }
-
     public string? ImageName { get; set; }
-
     public string FullName => $"{FirstName} {LastName}";
+    public string FullPath
+        => !string.IsNullOrEmpty(ImageName) ? $"/images/{ImageName}" : string.Empty;
 }

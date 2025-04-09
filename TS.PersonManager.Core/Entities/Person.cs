@@ -11,6 +11,5 @@ public sealed record Person
     public string PhoneNumber { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     public Gender? Gender { get; set; }
-    public string ImagePath { get; set; } = string.Empty;
-    public string? ImageName { get; set; }
+    public string ImageName { get; set; } = string.Empty;
 }

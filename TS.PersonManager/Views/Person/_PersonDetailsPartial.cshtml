@@ -1,9 +1,9 @@
 ﻿@model TS.PersonManager.Business.ViewModels.PersonViewModel
 
 <div class="text-center mb-3">
-    @if (!string.IsNullOrEmpty(Model.ImagePath))
+    @if (!string.IsNullOrEmpty(Model.FullPath))
     {
-        <img src="@Model.ImagePath" alt="Person Image" class="img-fluid rounded-circle" style="max-width: 200px; max-height: 200px;" />
+        <img src="@Model.FullPath" alt="Person Image" class="img-fluid rounded-circle" style="max-width: 200px; max-height: 200px;" />
     }
     else
     {
@@ -40,9 +40,9 @@
         <tr>
             <th>Image Upload</th>
             <td>
-                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                @if (!string.IsNullOrEmpty(Model.FullPath))
                 {
-                    <img src="@Model.ImagePath" alt="Person Image" style="max-width: 50px; max-height: 50px;" />
+                    <img src="@Model.FullPath" alt="Person Image" style="max-width: 50px; max-height: 50px;" />
                 }
                 else
                 {

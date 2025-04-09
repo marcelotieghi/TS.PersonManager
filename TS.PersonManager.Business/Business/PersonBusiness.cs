@@ -21,6 +21,7 @@ public class PersonBusiness(PersonContext context) : IPersonBusiness
                                 Email = x.Email
                             }).ToListAsync();
     }
+
     public async Task<PersonViewModel> GetById(int Id)
     {
         var model = await _context.Persons
@@ -32,8 +33,8 @@ public class PersonBusiness(PersonContext context) : IPersonBusiness
                                 Email = x.Email,
                                 PhoneNumber = x.PhoneNumber,
                                 DateOfBirth = x.DateOfBirth,
-                                ImagePath = x.ImagePath,
-                                ImageName = x.ImageName,
+                                Gender = x.Gender.GetValueOrDefault(),
+                                ImageName = x.ImageName
                             })
                             .FirstAsync();
 
@@ -42,7 +43,6 @@ public class PersonBusiness(PersonContext context) : IPersonBusiness
 
     public async Task<int> CreateModify(PersonViewModel model)
     {
-
         Person data = new();
 
         if (model.Id > 0)
@@ -55,8 +55,23 @@ public class PersonBusiness(PersonContext context) : IPersonBusiness
         data.Email = model.Email;
         data.PhoneNumber = model.PhoneNumber;
         data.DateOfBirth = model.DateOfBirth;
-        data.ImagePath = model.ImagePath ?? "";
-        data.ImageName = model.ImageName;
+        data.Gender = model.Gender;
+
+        if (model.ImageUpload != null && model.ImageUpload.Length > 0)
+        {
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(model.ImageUpload.FileName)}";
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.ImageUpload.CopyToAsync(stream);
+            }
+
+            data.ImageName = uniqueFileName;
+        }
 
         if (model.Id > 0)
         {

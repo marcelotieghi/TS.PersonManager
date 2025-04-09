@@ -24,6 +24,7 @@ namespace TS.PersonManager.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             try
@@ -42,48 +43,14 @@ namespace TS.PersonManager.Controllers
             }
         }
 
-
         [HttpGet]
         public IActionResult Create()
         {
-            return PartialView("_CreateEditPartial", new PersonViewModel());
+            var model = new PersonViewModel { DateOfBirth = DateTime.Today };
+            return PartialView("_CreateEditPartial", model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(PersonViewModel model, CancellationToken token)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return View(model);
-
-                if (model is null)
-                    return BadRequest("Invalid person data");
-
-                if (model.ImageUpload != null)
-                {
-                    var imagesPath = Path.Combine("wwwroot", "images");
-                    if (!Directory.Exists(imagesPath))
-                        Directory.CreateDirectory(imagesPath);
-
-                    var filePath = Path.Combine(imagesPath, model.ImageUpload.FileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await model.ImageUpload.CopyToAsync(stream, token);
-                    }
-
-                    model.ImagePath = $"/images/{model.ImageUpload.FileName}";
-                }
-
-                await _business.CreateModify(model);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "An unexpected error occurred: " + ex.Message;
-                return View(model);
-            }
-        }
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             try
@@ -104,14 +71,15 @@ namespace TS.PersonManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(PersonViewModel model)
+        public async Task<IActionResult> CreateModify(PersonViewModel model)
         {
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return View(model);
-                }
+
+                if (model is null)
+                    return BadRequest("Invalid person data");
 
                 await _business.CreateModify(model);
                 return RedirectToAction(nameof(Index));

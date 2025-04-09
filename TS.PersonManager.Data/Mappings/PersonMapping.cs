@@ -56,11 +56,11 @@ internal class PersonMapping : IEntityTypeConfiguration<Person>
             .Property(p => p.Gender)
             .HasColumnName("Gender")
             .HasColumnType("nvarchar")
-            .HasMaxLength(10)
+            .HasMaxLength(25)
             .IsRequired(false);
 
         builder
-            .Property(p => p.ImagePath)
+            .Property(p => p.ImageName)
             .HasColumnName("ImagePath")
             .HasColumnType("nvarchar")
             .HasMaxLength(255)
