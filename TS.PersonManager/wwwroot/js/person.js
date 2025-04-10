@@ -1,10 +1,10 @@
-﻿// Inicialização da DataTable
+﻿// Initialize DataTable
 $('#personTable').DataTable({
     responsive: true,
     lengthChange: false
 });
 
-// Handler para modal de criar/editar
+// Handler for create/edit modal
 $('body').on('click', '[data-bs-target="#personModal"]', async function () {
     const personId = $(this).data('id');
     const url = personId ? `/Person/Edit/${personId}` : '/Person/Create';
@@ -21,8 +21,7 @@ $('body').on('click', '[data-bs-target="#personModal"]', async function () {
     }
 });
 
-
-// Handler para modal de detalhes
+// Handler for details modal
 $('body').on('click', '.open-details-modal', async function () {
     const personId = $(this).data('id');
 
@@ -36,13 +35,14 @@ $('body').on('click', '.open-details-modal', async function () {
     }
 });
 
-// Handler para deleção
+// Handler for delete confirmation modal
 $('body').on('click', '.delete-person', function () {
     const personId = $(this).data('id');
     $('#confirmDeleteBtn').data('person-id', personId);
     $('#confirmDeleteModal').modal('show');
 });
 
+// Handler for confirmed deletion
 $('#confirmDeleteBtn').on('click', async function () {
     const personId = $(this).data('person-id');
 
