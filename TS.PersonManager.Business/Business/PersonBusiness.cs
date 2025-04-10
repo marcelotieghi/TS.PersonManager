@@ -90,6 +90,16 @@ public class PersonBusiness(PersonContext context) : IPersonBusiness
     public async Task Remove(int Id)
     {
         var data = await _context.Persons.Where(x => x.Id == Id).FirstAsync();
+
+        if (!string.IsNullOrEmpty(data.ImageName))
+        {
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", data.ImageName);
+            if (File.Exists(imagePath))
+            {
+                File.Delete(imagePath);
+            }
+        }
+
         _context.Persons.Remove(data);
         await _context.SaveChangesAsync();
     }
